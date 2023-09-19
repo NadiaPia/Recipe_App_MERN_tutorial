@@ -2,16 +2,20 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
+
 require("dotenv").config();
 
-
 const app = express();
-//console.log("process.env.DATABASE_PASSWORD", process.env.DATABASE_PASSWORD)
 
 //middlewares:
 
 app.use(express.json()); //convert data from FE to json inside every single request
 app.use(cors());
+
+//Routers
+
+const userRouter = require("./routes/users");
+app.use("/auth", userRouter);
 
 //connect to db
 
