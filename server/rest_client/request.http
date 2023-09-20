@@ -17,3 +17,23 @@ content-Type: application/json
     "password": "password"
 }
 #######
+
+
+post http://localhost:3001/recipes/
+content-Type: application/json
+
+{
+    "name": "Steak",
+    "ingredients": ["beef", "salt", "pepper"], 
+    "instructions": "Cook at high heat than baste it",
+    "imageUrl": "https://natashaskitchen.com/wp-content/uploads/2020/03/Pan-Seared-Steak-4.jpg",
+    "cookingTime": 30,
+    "userOwner": "65090e4c707f9dece81f09b8" 
+}
+#######
+
+
+get http://localhost:3001/recipes/
+content-Type: application/json
+
+#######

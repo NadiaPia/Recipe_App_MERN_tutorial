@@ -17,6 +17,9 @@ app.use(cors());
 const userRouter = require("./routes/users");
 app.use("/auth", userRouter);
 
+const recipesRouter = require("./routes/recipes");
+app.use("/recipes", recipesRouter);
+
 //connect to db
 
 mongoose.connect(`mongodb+srv://206i417:${process.env.DATABASE_PASSWORD}@recipes.uuxmdi7.mongodb.net/recipes?retryWrites=true&w=majority`)
