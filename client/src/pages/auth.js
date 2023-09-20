@@ -53,7 +53,7 @@ const Login = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [_, setCookies] = useCookies(["access_token"]) //we define the name our Cookie as "access_token"
+  const [cookies, setCookies] = useCookies(["accessS_token"]) //we define the name our Cookie as "accessS_token", othewise it'll rerender after changing the any info in the cookies
   const navigate = useNavigate();
 
   const onSubmit = async (event) => {
@@ -62,7 +62,7 @@ const Login = () => {
     try {
       const response = await axios.post ("http://localhost:3001/auth/login", {username, password});
       console.log("RESULT!!!!", response.data);
-      setCookies("access_token", response.data.token);
+      setCookies("accessS_token", response.data.token);
       window.localStorage.setItem("userIDD", response.data.userId); //to store user Id somewhwre and have an access to it
       navigate("/")
 
