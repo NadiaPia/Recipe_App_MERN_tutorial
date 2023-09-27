@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
+import useGetUserID from "../hooks/useGetUserID"
+
 
 function Home() {
   const [recipes, setRecipes] = useState([]);
+  const [savedRecipes, setSavedRecipes] = useState([]);
+
+  const userId = useGetUserID()
 
   useEffect(() => {
 
@@ -15,7 +20,31 @@ function Home() {
       }
     }
     fetchRecipe()
+    fetchSavedRecipe()
   }, [])
+
+  const saveRecipe = async (recipeId) => {
+    try {
+      const response = await axios.put("http://localhost:3001/recipes/", {recipeId, userId})
+      console.log("Response save recipe", response);
+      setSavedRecipes(response.data.savedRecipes) 
+      } catch (err) {
+        console.error(err);
+      };
+
+  };
+
+  const fetchSavedRecipe = async () => {
+    try {
+    const response = await axios.get(`http://localhost:3001/recipes/savedRecipes/ids/${userId}`);
+    setSavedRecipes(response.data.savedRecipes);  
+    //console.log("response.dataaaa", response.data)  
+    } catch (err) {
+      console.error(err);
+    };
+  };
+
+  const isRecipeSaved = (id) => savedRecipes.includes(id)
 
   return (
     <div>
@@ -24,10 +53,20 @@ function Home() {
       <ul>
         {recipes.map((recipe) => (
           <li key={recipe._id}>
+            
             <div>
               <h2>
                 {recipe.name}
               </h2>
+              <button 
+                onClick={() => saveRecipe(recipe._id)} 
+                disabled={isRecipeSaved(recipe._id)}
+                >
+                  {isRecipeSaved(recipe._id) ? "Saved" : "Save"}
+                </button> {/*Any () is starting the function, 
+              even though there is an argument inside it and despite the onClick event. It will call the function 
+              right away after the render the page. To avoid it, we use callback function as call back doesn't mean 
+              to call a function immediately, only after onClick in our case */}
             </div>
 
             <div className="instructions">
@@ -41,7 +80,6 @@ function Home() {
             <p>
               Cooking Time: {recipe.cookingTime} (minutes)
             </p>
-
 
           </li>)
         )}

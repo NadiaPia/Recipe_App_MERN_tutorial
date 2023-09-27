@@ -40,7 +40,11 @@ function CreateRecipe() {
     //but we need to prevent it as we need to send request to the server
     navigate("/")
     try {
-      await axios.post("http://localhost:3001/recipes", recipe);
+      await axios.post("http://localhost:3001/recipes", recipe).then((response) => {
+        console.log("reeeeesponse", response)
+      })      
+     
+      
       alert("Recipe Created")
 
     } catch (err) {
