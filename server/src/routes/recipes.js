@@ -29,34 +29,33 @@ router.post("/", async(req, res) => {
 
 //we need to save the recipeId in the users data:
 router.put("/", async(req, res) => {
-    const recipe = await RecipeModel.findById(req.body.recipeId);
-    const user = await UserModel.findById(req.body.userId);
-    user.savedRecipes.push(recipe);
-    await user.save();
-    res.json({ savedRecipes: user.savedRecipes });
+    const recipe = await RecipeModel.findById(req.body.recipeId);  //loking for the particular recipe by it'd id from a req.body
+    const user = await UserModel.findById(req.body.userId); //loking for the particular user by it'd id from a req.body
+        
     try {
-        const response = await recipe.save();
-        res.json(response)
-
+        user.savedRecipes.push(recipe); //push in the user table inside a savedRecipes raw the id of the foud recipe
+        await user.save(); //save it
+        res.status(201).json({ savedRecipes: user.savedRecipes }); //put savedRecipes data under the key savedRecipes in a json file
+           
     } catch (err) {
-        res.json(err)
+        res.status(500).json(err)
     };
 });
 
-router.get("/savedRecipes/ids", async(req, res) => {
+router.get("/savedRecipes/ids/:userId", async(req, res) => {
     
     try {
-        const user = await UserModel.findById(req.body.userId);
+        const user = await UserModel.findById(req.params.userId);
         res.json({ savedRecipes: user?.savedRecipes })
     } catch (err) {
         res.json(err)
     };
 });
 
-router.get("/savedRecipes", async(req, res) => {
+router.get("/savedRecipes/:userId", async(req, res) => {
     
     try {
-        const user = await UserModel.findById(req.body.userId);
+        const user = await UserModel.findById(req.params.userId);
         const savedRecipes = await RecipeModel.find({
             _id: { $in: user.savedRecipes },
         })
