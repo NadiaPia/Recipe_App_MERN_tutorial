@@ -3,12 +3,9 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 
-
-
-
 function Auth() {
   return (
-    <div classame="auth">
+    <div className="auth">
       <Login />
       <Register />
 
@@ -60,17 +57,15 @@ const Login = () => {
     event.preventDefault(); //prevent refresh the page after the submit the form
 
     try {
-      const response = await axios.post ("http://localhost:3001/auth/login", {username, password});
-      console.log("RESULT!!!!", response.data);
+      const response = await axios.post ("http://localhost:3001/auth/login", {username, password});     
       setCookies("accessS_token", response.data.token);
       window.localStorage.setItem("userIDD", response.data.userId); //to store user Id somewhwre and have an access to it
-      navigate("/")
+      navigate("/");
 
     } catch (err) {
-      console.error(err)
-    }
-
-  }
+      console.error(err);
+    };
+  };
 
   return (
     <Form
@@ -80,10 +75,8 @@ const Login = () => {
       setPassword={setPassword}
       label="Login"
       onSubmit={onSubmit}
-
     />
-  )
-
+  );
 };
 
 const Form = ({ username, setUsername, password, setPassword, label, onSubmit }) => {
@@ -118,4 +111,4 @@ const Form = ({ username, setUsername, password, setPassword, label, onSubmit })
 
 }
 
-export default Auth
+export default Auth;

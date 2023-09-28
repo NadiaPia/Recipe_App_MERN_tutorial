@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import useGetUserID from "../hooks/useGetUserID"
+import useGetUserID from "../hooks/useGetUserID";
+import { useCookies } from 'react-cookie';
 
 function CreateRecipe() {
 
   const userID = useGetUserID();
+  const [cookies, setCookies] = useCookies(["accessS_token"]);
 
   const [recipe, setRecipe] = useState({
     name: "",
@@ -38,14 +40,11 @@ function CreateRecipe() {
   const onSubmit = async (event) => {
     event.preventDefault(); //othewise a page will refresh right away after the submit event, 
     //but we need to prevent it as we need to send request to the server
-    navigate("/")
+    
     try {
-      await axios.post("http://localhost:3001/recipes", recipe).then((response) => {
-        console.log("reeeeesponse", response)
-      })      
-     
-      
-      alert("Recipe Created")
+      await axios.post("http://localhost:3001/recipes", recipe, {headers: {authorization: cookies.accessS_token}})      
+      alert("Recipe Created");
+      navigate("/");
 
     } catch (err) {
       console.error(err);
@@ -81,4 +80,4 @@ function CreateRecipe() {
   )
 }
 
-export default CreateRecipe
+export default CreateRecipe;
