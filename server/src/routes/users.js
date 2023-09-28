@@ -22,7 +22,7 @@ router.post("/register", async(req, res) => {
 })
 
 router.post("/login", async(req, res) => {
-    const {username, password} = req.body;
+    const {username, password} = req.body;   
     const user = await UserModel.findOne({username: username});
     if(!user) {
         return res.json({message: "User doesn't exist"});
@@ -33,15 +33,10 @@ router.post("/login", async(req, res) => {
         return res.json({message: "Username or Password is Incorrect"});
     }
 
-    const token = jwt.sign({ id: user._id}, "secret")
-    res.json({ token, userId: user._id })
+    const token = jwt.sign({ id: user._id}, "secret");
+    res.json({ token, userId: user._id });
 
-})
-
-
+});
 //export { router as userRouter}
 
 module.exports = router;
-
-
-

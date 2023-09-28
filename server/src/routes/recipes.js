@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const RecipeModel = require("../models/Recipes");
 const UserModel = require("../models/Users");
+const verifyToken = require("../verifyToken/verifyToken");
 
 
 const router = express.Router();
@@ -16,7 +17,8 @@ router.get("/", async(req, res) => {
     };
 });
 
-router.post("/", async(req, res) => {
+router.post("/",  verifyToken, async(req, res) => { //verifyToken,
+    
     const recipe = new RecipeModel(req.body)
     try {
         const response = await recipe.save();
@@ -28,7 +30,7 @@ router.post("/", async(req, res) => {
 });
 
 //we need to save the recipeId in the users data:
-router.put("/", async(req, res) => {
+router.put("/", verifyToken, async(req, res) => { //verifyToken,
     const recipe = await RecipeModel.findById(req.body.recipeId);  //loking for the particular recipe by it'd id from a req.body
     const user = await UserModel.findById(req.body.userId); //loking for the particular user by it'd id from a req.body
         
